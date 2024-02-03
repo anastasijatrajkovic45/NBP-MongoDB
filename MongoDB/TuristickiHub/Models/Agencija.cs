@@ -1,11 +1,15 @@
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
-
 namespace TuristickiHub.Models;
-//treba da povezem mongoClient, mongoDatabase i mongoCollection
+
 public class Agencija
 {
     [BsonId]
     [BsonRepresentation(BsonType.ObjectId)]
-    public string Id { get; set; } //id je string!
+    public string Id { get; set; }
+    public string Naziv { get; set; }
+    public string Adresa { get; set; }
+    public string Grad { get; set; }
+    public string Email { get; set; }
+    public string BrojTelefona { get; set; }
 }
