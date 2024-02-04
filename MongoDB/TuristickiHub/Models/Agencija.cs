@@ -12,4 +12,6 @@ public class Agencija
     public string Grad { get; set; }
     public string Email { get; set; }
     public string BrojTelefona { get; set; }
+
+    public List<Putovanje> Putovanje { get; set; }
 }

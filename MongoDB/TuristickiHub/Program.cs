@@ -8,6 +8,11 @@ builder.Services.Configure<TuristickiHubDatabaseSettings>(
     builder.Configuration.GetSection("TuristickiHubDatabase"));
 
 builder.Services.AddSingleton<AgencijaService>();
+builder.Services.AddSingleton<PutovanjeService>();
+builder.Services.AddSingleton<AktivnostService>();
+builder.Services.AddSingleton<RecenzijaService>();
+builder.Services.AddSingleton<RezervacijaService>();
+builder.Services.AddSingleton<SmestajService>();
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
