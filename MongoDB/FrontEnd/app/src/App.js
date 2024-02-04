@@ -8,17 +8,21 @@ import Putovanje from './components/Putovanje';
 import PutovanjeProfil from './components/PutovanjeProfil';
 import PutovanjePrikaz from './components/PutovanjePrikaz';
 import Recenzije from './components/Recenzije';
+import Smestaj from './components/Smestaj';
+import Rezervacije from './components/Rezervacije';
 
 const App = () => {
   return (
     <Router>
       <Navbar />
-
+      
       <Routes>
         <Route path="/" element={<Pocetna />} />
         <Route path="/Agencije" element={<Agencije />} />
         <Route path="/Agencije/:id" element={<Putovanje />} />
         <Route path="/Putovanje/:id/Recenzije" element={<Recenzije />} />
+        <Route path="/Putovanje/:id/Smestaj" element={<Smestaj />} />
+        <Route path="Putovanje/:putovanjeId/Smestaj/:smestajId/Rezervacije" element={<Rezervacije />} />
         <Route path="/Putovanje/:id" element={<PutovanjeProfil />} />
         <Route path="/PutovanjePrikaz" element={<PutovanjePrikaz />} />
       </Routes>

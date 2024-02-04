@@ -13,7 +13,6 @@ const NavBar = () => {
           <Tab label="Početna" component={Link} to="/" sx={{ color: 'white'}}/>
           <Tab label="Agencije" component={Link} to="/Agencije" sx={{ color: 'white' }}/>
           <Tab label="Destinacije" component={Link} to="/PutovanjePrikaz" sx={{ color: 'white' }}/>
-          <Tab label="Kontakt" component={Link} to="/Kontakt" sx={{ color: 'white' }}/>
         </Tabs>
       </Toolbar>
     </AppBar>

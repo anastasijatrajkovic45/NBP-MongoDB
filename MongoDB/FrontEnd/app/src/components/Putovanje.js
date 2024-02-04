@@ -47,7 +47,7 @@ const Putovanje = () => {
     async function fetchPutovanja() {
       try {
         const response = await fetch(
-          `https://localhost:7193/Putovanje/PreuzmiPutovanjaAgencije/${id}`
+          `http://localhost:5178/api/Putovanje/PreuzmiPutovanjaAgencije/${id}`
         );
         if (response.ok) {
           const data = await response.json();
@@ -117,7 +117,7 @@ const handleRezervacija = async () => {
 
 const handleDodajPutovanje = async () => {
   try {
-    const response = await fetch(`https://localhost:7193/Putovanje/DodajPutovanjeAgenciji/${id}`, {
+    const response = await fetch(`http://localhost:5178/api/Putovanje/DodajPutovanjeAgenciji/${id}`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -142,7 +142,7 @@ const handleSacuvajIzmene = async (e) => {
     e.preventDefault();
     try {
       const response = await fetch(
-        `https://localhost:7193/Putovanje/AzurirajPutovanje/${izmenjeniPodaci.id}`,
+        `http://localhost:5178/api/Putovanje/AzurirajPutovanje${izmenjeniPodaci.id}`,
         {
           method: 'PUT',
           headers: {
@@ -178,7 +178,7 @@ const handleSacuvajIzmene = async (e) => {
   const handleObrisiPutovanje = async (putovanjeId) => {
     try {
       const response = await fetch(
-        `https://localhost:7193/Putovanje/ObrisiPutovanje/${putovanjeId}`,
+        `http://localhost:5178/api/Putovanje/ObrisiPutovanje${putovanjeId}`,
         {
           method: 'DELETE',
         }
@@ -471,7 +471,7 @@ const handleSacuvajIzmene = async (e) => {
                             >
                               Izmeni
                             </Button>
-                            <Button
+                            {/* <Button
                               id="rezervisi"
                               variant="outlined"
                               color="primary"
@@ -479,7 +479,13 @@ const handleSacuvajIzmene = async (e) => {
                               style={{ marginLeft: '10px' }}
                             >
                               Rezerviši
-                            </Button>
+                            </Button> */}
+                            
+                            <NavLink to={`/Putovanje/${putovanje.id}/Smestaj`}>
+                              <Button style={{ marginLeft: '10px' }} variant="outlined">
+                              Smeštaj
+                              </Button>
+                            </NavLink>
                         </StyledCardContent>
                     </StyledCard>
                 </Grid>

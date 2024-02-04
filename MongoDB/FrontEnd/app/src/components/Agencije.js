@@ -12,7 +12,7 @@ const Agencije = () => {
   useEffect(() => {
     const fetchAgencije = async () => {
       try {
-        const response = await fetch('https://localhost:7193/AgencijaContoller/PrezumiAgencije');
+        const response = await fetch('http://localhost:5178/api/Agencija/PreuzmiAgencije');
         const data = await response.json();
         setAgencije(data);
       } catch (error) {
@@ -25,7 +25,7 @@ const Agencije = () => {
 
   const handleObrisiAgenciju = async (id) => {
     try {
-      await fetch(`https://localhost:7193/AgencijaContoller/ObrisiAgenciju/${id}`, {
+      await fetch(`http://localhost:5178/api/Agencija/ObrisiAgenciju${id}`, {
         method: 'DELETE',
       });
       window.location.reload();
@@ -36,7 +36,7 @@ const Agencije = () => {
 
   const handleDodajAgenciju = async () => {
     try {
-      await fetch('https://localhost:7193/AgencijaContoller/DodajAgenciju', {
+      await fetch('http://localhost:5178/api/Agencija/DodajAgenciju', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -51,7 +51,7 @@ const Agencije = () => {
 
   const handleIzmeniAgenciju = async () => {
     try {
-      await fetch(`https://localhost:7193/AgencijaContoller/AzurirajAgenciju/${selectedAgencijaId}`, {
+      await fetch(`http://localhost:5178/api/Agencija/AzurirajAgenciju${selectedAgencijaId}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',

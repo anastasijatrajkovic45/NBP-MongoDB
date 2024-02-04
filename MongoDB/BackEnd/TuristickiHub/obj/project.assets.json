@@ -1228,19 +1228,24 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\PC\\.nuget\\packages\\": {}
+    "C:\\Users\\ANASTASIJA\\.nuget\\packages\\": {},
+    "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\PC\\Documents\\IV godina\\VII\\NBP\\MongoDB\\TuristickiHub\\TuristickiHub.csproj",
+      "projectUniqueName": "C:\\Users\\ANASTASIJA\\Desktop\\Fakultet\\VII semestar\\Napredne baze podataka\\NBP-MongoDB\\MongoDB\\BackEnd\\TuristickiHub\\TuristickiHub.csproj",
       "projectName": "TuristickiHub",
-      "projectPath": "C:\\Users\\PC\\Documents\\IV godina\\VII\\NBP\\MongoDB\\TuristickiHub\\TuristickiHub.csproj",
-      "packagesPath": "C:\\Users\\PC\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\PC\\Documents\\IV godina\\VII\\NBP\\MongoDB\\TuristickiHub\\obj\\",
+      "projectPath": "C:\\Users\\ANASTASIJA\\Desktop\\Fakultet\\VII semestar\\Napredne baze podataka\\NBP-MongoDB\\MongoDB\\BackEnd\\TuristickiHub\\TuristickiHub.csproj",
+      "packagesPath": "C:\\Users\\ANASTASIJA\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\ANASTASIJA\\Desktop\\Fakultet\\VII semestar\\Napredne baze podataka\\NBP-MongoDB\\MongoDB\\BackEnd\\TuristickiHub\\obj\\",
       "projectStyle": "PackageReference",
+      "fallbackFolders": [
+        "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+      ],
       "configFilePaths": [
-        "C:\\Users\\PC\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\ANASTASIJA\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [

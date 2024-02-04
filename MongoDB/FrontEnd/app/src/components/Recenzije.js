@@ -22,7 +22,7 @@ const Recenzije = () => {
 
   const fetchData = () => {
     setLoading(true);
-    fetch(`https://localhost:7193/Recenzija/PreuzmiRecenzijeNaPutovanju/${id}`)
+    fetch(`http://localhost:5178/api/Recenzija/PreuzmiRecenzijeNaPutovanju/${id}`)
       .then((response) => response.json())
       .then((data) => {
         setRecenzije(data);
@@ -51,7 +51,7 @@ const Recenzije = () => {
   };
 
   const handleSubmit = () => {
-    fetch(`https://localhost:7193/Recenzija/DodajRecenzijuUPutovanje/${id}`, {
+    fetch(`http://localhost:5178/api/Recenzija/DodajRecenzijuPutovanju/${id}`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -69,7 +69,7 @@ const Recenzije = () => {
   };
 
   const handleObrisiRecenziju = (recenzijaId) => {
-    fetch(`https://localhost:7193/Recenzija/ObrisiRecenziju/${recenzijaId}`, {
+    fetch(`http://localhost:5178/api/Recenzija/ObrisiRecenziju${recenzijaId}`, {
       method: 'DELETE',
     })
       .then(() => {
@@ -100,7 +100,7 @@ const Recenzije = () => {
   };
 
   const handleSacuvajIzmenu = () => {
-    fetch(`https://localhost:7193/Recenzija/AzurirajRecenziju/${izmenjeniPodaci.id}`, {
+    fetch(`http://localhost:5178/api/Recenzija/AzurirajRecenziju${izmenjeniPodaci.id}`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',

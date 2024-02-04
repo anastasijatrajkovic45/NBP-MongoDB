@@ -42,7 +42,7 @@ const PutovanjeProfil = () => {
 
   const fetchData = () => {
     setLoading(true);
-    fetch(`https://localhost:7193/Aktivnosti/PreuzmiAktivnostiNaPutovanju/${id}`)
+    fetch(`http://localhost:5178/api/Aktivnost/PreuzmiAktivnostiNaPutovanju/${id}`)
       .then((response) => response.json())
       .then((data) => {
         setAktivnosti(data);
@@ -85,7 +85,7 @@ const PutovanjeProfil = () => {
   };
 
   const handleSubmit = () => {
-    fetch(`https://localhost:7193/Aktivnosti/DodajAktivnostUPutovanje/${id}`, {
+    fetch(`http://localhost:5178/api/Aktivnost/DodajAktivnostPutovanju/${id}`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -103,7 +103,7 @@ const PutovanjeProfil = () => {
   };
 
   const handleObrisiAktivnost = (aktivnostId) => {
-    fetch(`https://localhost:7193/Aktivnosti/ObrisiAktivnost/${aktivnostId}`, {
+    fetch(`http://localhost:5178/api/Aktivnost/ObrisiAktivnost${aktivnostId}`, {
       method: 'DELETE',
     })
       .then(() => {
@@ -147,7 +147,7 @@ const PutovanjeProfil = () => {
   };
 
   const handleSacuvajIzmenu = () => {
-    fetch(`https://localhost:7193/Aktivnosti/AzurirajAktivnost/${izmenjeniPodaci.id}`, {
+    fetch(`http://localhost:5178/api/Aktivnost/AzurirajAktivnost${izmenjeniPodaci.id}`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',

@@ -33,7 +33,7 @@ const PutovanjePrikaz = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await fetch('https://localhost:7193/Putovanje/PreuzmiPutovanja');
+                const response = await fetch('http://localhost:5178/api/Putovanje/PreuzmiPutovanja');
                 const data = await response.json();
                 setPutovanja(data);
             } catch (error) {

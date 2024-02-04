@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("TuristickiHub")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+72b5f3769bf8fc61070756649bfa81f97e58e8a5")]
 [assembly: System.Reflection.AssemblyProductAttribute("TuristickiHub")]
 [assembly: System.Reflection.AssemblyTitleAttribute("TuristickiHub")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
