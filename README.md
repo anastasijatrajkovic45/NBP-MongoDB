@@ -11,7 +11,7 @@
 
 # Clone repository
  - git clone https://github.com/stojanovicc/NBP-MongoDB.git
- - cd NPB-MongoDB
+ - cd NBP-MongoDB
 
 # MongoDB
 
