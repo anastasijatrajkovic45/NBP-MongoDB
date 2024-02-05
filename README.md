@@ -10,13 +10,13 @@
  - React(JS)
 
 # Clone repository
- - git clone https://github.com/stojanovicc/TIKS.git
+ - git clone https://github.com/stojanovicc/NBP-MongoDB.git
  - cd NPB-MongoDB
 
 # MongoDB
 
 # Server start
-  - cd ../NBP-MongoDB\MongoDB\BackEnd\TuristickiHub
+  - cd ..\NBP-MongoDB\MongoDB\BackEnd\TuristickiHub
   - dotnet watch run
 
 # Client start
