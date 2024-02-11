@@ -14,6 +14,7 @@
  - cd NBP-MongoDB
 
 # MongoDB
+ - startovati mongoDB
 
 # Server start
   - cd ..\NBP-MongoDB\MongoDB\BackEnd\TuristickiHub
