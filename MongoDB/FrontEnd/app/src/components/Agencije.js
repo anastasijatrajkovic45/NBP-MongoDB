@@ -1,5 +1,5 @@
 // import React, { useState, useEffect } from 'react';
-// import {Card, CardContent, Typography, Button, Grid, Divider, Dialog, DialogTitle, DialogContent, DialogActions, TextField,} from '@mui/material';
+// import { Card, CardContent, Typography, Button, Grid, Divider, Dialog, DialogTitle, DialogContent, DialogActions, TextField } from '@mui/material';
 // import { NavLink } from 'react-router-dom';
 
 // const Agencije = () => {
@@ -8,6 +8,9 @@
 //   const [openIzmeniForma, setOpenIzmeniForma] = useState(false);
 //   const [novaAgencija, setNovaAgencija] = useState({});
 //   const [selectedAgencijaId, setSelectedAgencijaId] = useState(null);
+//   const [loggedIn, setLoggedIn] = useState(false);
+//   const [isAdmin, setIsAdmin] = useState(true); //ovde je trebalo true!
+//   const [userAgency, setUserAgency] = useState(null);
 
 //   useEffect(() => {
 //     const fetchAgencije = async () => {
@@ -22,6 +25,24 @@
 
 //     fetchAgencije();
 //   }, []);
+
+//   useEffect(() => {
+//     const token = localStorage.getItem('token');
+//     setLoggedIn(!!token);
+//     if (token) {
+//       fetchUserInfo(token);
+//     }
+//   }, []);
+
+//   const fetchUserInfo = async (token) => {
+//     try {
+//       const response = await fetch(`http://localhost:5178/api/Auth/GetKorisnikByToken?token=${token}`);
+//       const userInfo = await response.json();
+//       setIsAdmin(userInfo.isAdmin);
+//     } catch (error) {
+//       console.error('Error fetching user info:', error);
+//     }
+//   };
 
 //   const handleObrisiAgenciju = async (id) => {
 //     try {
@@ -70,37 +91,124 @@
 //     setOpenIzmeniForma(true);
 //   };
 
+//   useEffect(() => {
+//     const fetchUserAgency = async () => {
+//       try {
+//         const token = localStorage.getItem('token');
+//         const response = await fetch(`http://localhost:5178/api/Auth/PreuzmiAgencijuKorisnika?token=${token}`);
+//         if (response.ok) {
+//           const data = await response.json();
+//           setUserAgency(data);
+//         } else {
+//           console.error('Error fetching user agency:', response.statusText);
+//         }
+//       } catch (error) {
+//         console.error('Error fetching user agency:', error);
+//       }
+//     };
+
+//     fetchUserAgency();
+//   }, []);
+  
+
 //   return (
 //     <div>
 //       <Typography variant="h6" sx={{ marginTop: '10px' }} gutterBottom>
 //         <Divider>Lista agencija</Divider>
-//         <Button
-//           id="dodajAgenciju"
-//           variant="contained"
-//           style={{ margin: '0 auto', display: 'block', marginTop: '10px' }}
-//           onClick={() => setOpenDodajForma(true)}
-//           sx={{ marginTop: '10px', backgroundColor: '#900C3F' }}
-//         >
-//           Dodaj agenciju
-//         </Button>
+//         {loggedIn && isAdmin && (
+//           <Button
+//             id="dodajAgenciju"
+//             variant="contained"
+//             style={{ margin: '0 auto', display: 'block', marginTop: '10px' }}
+//             onClick={() => setOpenDodajForma(true)}
+//             sx={{ marginTop: '10px', backgroundColor: '#900C3F' }}
+//           >
+//             Dodaj agenciju
+//           </Button>
+//         )}
+
 //       </Typography>
 //       <Grid container spacing={2}>
-//         {agencije.map((agencija) => (
-//           <Grid item xs={12} sm={6} md={4} key={agencija.id}>
-//             <Card id="agencije" variant="outlined" sx={{ borderColor: 'purple', minWidth: '250px', margin: '1px' }}>
+//           {isAdmin && agencije.map((agencija) => (
+//             <Grid item xs={12} sm={6} md={4} key={agencija.id}>
+//               <Card id="agencije" variant="outlined" sx={{ borderColor: 'purple', minWidth: '250px', margin: '1px' }}>
+//                 <CardContent sx={{ paddingTop: '5px' }}>
+//                   <Typography variant="h6">{agencija.naziv}</Typography>
+//                   <Typography variant="body6" color="textSecondary">
+//                     Lokacija: {agencija.adresa}, {agencija.grad}
+//                   </Typography>
+//                   <Typography variant="body2" color="textSecondary">
+//                     Email: {agencija.email}
+//                   </Typography>
+//                   <Typography variant="body2" color="textSecondary">
+//                     Broj telefona: {agencija.brojTelefona}
+//                   </Typography>
+//                   <Divider>
+//                     <NavLink to={`/Agencije/${agencija.id}`}>
+//                       <Button
+//                         sx={{
+//                           color: '#900C3F',
+//                           transition: 'box-shadow 0.3s, color 0.3s',
+//                           '&:hover': {
+//                             boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2)',
+//                             color: '#900C3F',
+//                           },
+//                         }}
+//                       >
+//                         Pregled putovanja
+//                       </Button>
+//                     </NavLink>
+//                   </Divider>
+//                   {loggedIn && (
+//                     <>
+//                       {isAdmin && (
+//                         <>
+//                           <Divider>
+//                             <Button id="obrisi" sx={{ color: '#B80010' }} onClick={() => handleObrisiAgenciju(agencija.id)}>
+//                               Obriši
+//                             </Button>
+//                           </Divider>
+//                           <Divider>
+//                             <Button
+//                               id="izmeni"
+//                               sx={{
+//                                 color: '#B80000',
+//                                 transition: 'box-shadow 0.3s, color 0.3s',
+//                                 '&:hover': {
+//                                   boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2)',
+//                                   color: '#B80000',
+//                                 },
+//                               }}
+//                               onClick={() => openIzmeniFormaHandler(agencija)}
+//                             >
+//                               Izmeni
+//                             </Button>
+//                           </Divider>
+//                         </>
+//                       )}
+//                     </>
+//                   )}
+//                 </CardContent>
+//               </Card>
+//             </Grid>
+//           ))}
+          
+//           {!isAdmin && userAgency && (
+//           <Grid item xs={12} sm={6} md={4}>
+//             <Card id="user-agency" variant="outlined" sx={{ borderColor: 'purple', minWidth: '250px', margin: '1px' }}>
 //               <CardContent sx={{ paddingTop: '5px' }}>
-//                 <Typography variant="h6">{agencija.naziv}</Typography>
+//                 <Typography variant="h6">{userAgency.naziv}</Typography>
 //                 <Typography variant="body6" color="textSecondary">
-//                   Lokacija: {agencija.adresa}, {agencija.grad}
+//                   Lokacija: {userAgency.adresa}, {userAgency.grad}
 //                 </Typography>
 //                 <Typography variant="body2" color="textSecondary">
-//                   Email: {agencija.email}
+//                   Email: {userAgency.email}
 //                 </Typography>
 //                 <Typography variant="body2" color="textSecondary">
-//                   Broj telefona: {agencija.brojTelefona}
+//                   Broj telefona: {userAgency.brojTelefona}
 //                 </Typography>
 //                 <Divider>
-//                   <NavLink to={`/Agencije/${agencija.id}`}>
+//                   <NavLink to={`/Agencije/${userAgency.id}`}>
 //                     <Button
 //                       sx={{
 //                         color: '#900C3F',
@@ -115,32 +223,14 @@
 //                     </Button>
 //                   </NavLink>
 //                 </Divider>
-//                 <Divider>
-//                   <Button id="obrisi" sx={{ color: '#B80010' }}  onClick={() => handleObrisiAgenciju(agencija.id)}>
-//                     Obriši
-//                   </Button>
-//                 </Divider>
-//                 <Divider>
-//                 <Button
-//                   id="izmeni"
-//                   sx={{
-//                     color: '#B80000',
-//                     transition: 'box-shadow 0.3s, color 0.3s',
-//                     '&:hover': {
-//                       boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2)',
-//                       color: '#B80000',
-//                     },
-//                   }}
-//                   onClick={() => openIzmeniFormaHandler(agencija)}
-//                 >
-//                   Izmeni
-//                 </Button>
-//                 </Divider>
 //               </CardContent>
 //             </Card>
 //           </Grid>
-//         ))}
+//         )}
+
+
 //       </Grid>
+
 
 //       <Dialog open={openDodajForma} onClose={() => setOpenDodajForma(false)}>
 //         <DialogTitle>Dodaj agenciju</DialogTitle>
@@ -261,6 +351,7 @@
 // export default Agencije;
 
 
+//SA PRETRAGOM
 
 import React, { useState, useEffect } from 'react';
 import { Card, CardContent, Typography, Button, Grid, Divider, Dialog, DialogTitle, DialogContent, DialogActions, TextField } from '@mui/material';
@@ -275,6 +366,7 @@ const Agencije = () => {
   const [loggedIn, setLoggedIn] = useState(false);
   const [isAdmin, setIsAdmin] = useState(true); //ovde je trebalo true!
   const [userAgency, setUserAgency] = useState(null);
+  const [searchTerm, setSearchTerm] = useState('');
 
   useEffect(() => {
     const fetchAgencije = async () => {
@@ -297,6 +389,7 @@ const Agencije = () => {
       fetchUserInfo(token);
     }
   }, []);
+  
 
   const fetchUserInfo = async (token) => {
     try {
@@ -373,7 +466,14 @@ const Agencije = () => {
 
     fetchUserAgency();
   }, []);
-  
+
+  const handleSearch = (event) => {
+    setSearchTerm(event.target.value);
+  };
+
+  const filteredAgencije = agencije.filter((agencija) =>
+    agencija.naziv.toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
   return (
     <div>
@@ -392,8 +492,22 @@ const Agencije = () => {
         )}
 
       </Typography>
+    
+      {isAdmin &&(
+        <TextField
+        id="pretraga"
+        label="Pretraga"
+        variant="outlined"
+        margin="normal"
+        fullWidth
+        onChange={handleSearch}
+      />
+      )}
+
+      
+
       <Grid container spacing={2}>
-          {isAdmin && agencije.map((agencija) => (
+          {isAdmin && filteredAgencije.map((agencija) => (
             <Grid item xs={12} sm={6} md={4} key={agencija.id}>
               <Card id="agencije" variant="outlined" sx={{ borderColor: 'purple', minWidth: '250px', margin: '1px' }}>
                 <CardContent sx={{ paddingTop: '5px' }}>
