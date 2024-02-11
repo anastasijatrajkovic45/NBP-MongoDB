@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { NavLink, useParams } from 'react-router-dom';
-import {Typography, Divider, Button, Card, CardContent, CardActions, Grid, TextField} from '@mui/material';
+import {Typography, Divider, Button, Card, CardContent, Grid, TextField} from '@mui/material';
 import { styled } from '@mui/system';
 
 const StyledCard = styled(Card)({
@@ -24,24 +24,11 @@ const StyledCardContent = styled(CardContent)({
   flexGrow: 1,
 });
 
-const StyledCardActions = styled(CardActions)({
-  justifyContent: 'space-between',
-});
 
 const Putovanje = () => {
   const { id } = useParams();
   const [putovanja, setPutovanja] = useState([]);
   const [putovanjeZaIzmenu, setPutovanjeZaIzmenu] = useState(null);
-  const [rezervacijaAktivna, setRezervacijaAktivna] = useState(false);
-  const [podaciRezervacije, setPodaciRezervacije] = useState({
-    Ime: '',
-    Prezime: '',
-    BrojTelefona: '',
-    Adresa: '',
-    Grad: '',
-    Email: '',
-    BrojOsoba: 0
-  });
   const [loggedIn, setLoggedIn] = useState(false);
   const [isAdmin, setIsAdmin] = useState(true);
   useEffect(() => {
@@ -61,8 +48,6 @@ const Putovanje = () => {
       console.error('Error fetching user info:', error);
     }
   };
-
-
 
   useEffect(() => {
     async function fetchPutovanja() {
@@ -107,29 +92,6 @@ const [noviPodaci, setNoviPodaci] = useState({
   prevoz: ''
 });
 
-
-const handleRezervacija = async () => {
-  try {
-    const response = await fetch(`https://localhost:7193/Rezervacija/DodajRezervacijuPutovanja/${putovanjeZaIzmenu.id}`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(podaciRezervacije),
-    });
-
-    if (response.ok) {
-      console.log('Rezervacija je uspešno dodata.');
-      setRezervacijaAktivna(false); 
-      const updatedPutovanja = await response.json();
-      setPutovanja(updatedPutovanja);
-    } else {
-      throw new Error('Greška prilikom dodavanja rezervacije.');
-    }
-  } catch (error) {
-    console.error('Greška prilikom slanja zahtjeva za rezervaciju:', error);
-  }
-};
 
 const handleDodajPutovanje = async () => {
   try {
@@ -274,7 +236,9 @@ const handleSacuvajIzmene = async (e) => {
         </form>
       </div>
     )}
-    <Divider><Button
+
+    {loggedIn && !isAdmin && (
+      <Divider><Button
       id="dodajPutovanje"
       variant="contained"
       sx={{ backgroundColor: '#900C3F'}}
@@ -283,94 +247,8 @@ const handleSacuvajIzmene = async (e) => {
     >
       Dodaj putovanje
     </Button></Divider>
-
-    {putovanjeZaIzmenu && rezervacijaAktivna && (
-      <div style={{ textAlign: 'center', marginTop: '20px' }}>
-        <Typography variant="h6">Rezervacija putovanja</Typography>
-        <form
-          onSubmit={(e) => {
-            e.preventDefault();
-            handleRezervacija();
-          }}
-          style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}
-        >
-          <TextField
-            id="ime"
-            label="Ime"
-            variant="outlined"
-            value={podaciRezervacije.Ime}
-            onChange={(e) =>
-              setPodaciRezervacije({ ...podaciRezervacije, Ime: e.target.value })
-            }
-            style={{ marginBottom: '10px', width: '300px' }}
-          />
-          <TextField
-            id="prezime"
-            label="Prezime"
-            variant="outlined"
-            value={podaciRezervacije.Prezime}
-            onChange={(e) =>
-              setPodaciRezervacije({ ...podaciRezervacije, Prezime: e.target.value })
-            }
-            style={{ marginBottom: '10px', width: '300px' }}
-          />
-          <TextField
-            id="adresa"
-            label="Adresa"
-            variant="outlined"
-            value={podaciRezervacije.Adresa}
-            onChange={(e) =>
-              setPodaciRezervacije({ ...podaciRezervacije, Adresa: e.target.value })
-            }
-            style={{ marginBottom: '10px', width: '300px' }}
-          />
-          <TextField
-            id="grad"
-            label="Grad"
-            variant="outlined"
-            value={podaciRezervacije.Grad}
-            onChange={(e) =>
-              setPodaciRezervacije({ ...podaciRezervacije, Grad: e.target.value })
-            }
-            style={{ marginBottom: '10px', width: '300px' }}
-          />
-          <TextField
-            id="brojTelefona"
-            label="Broj telefona"
-            variant="outlined"
-            value={podaciRezervacije.BrojTelefona}
-            onChange={(e) =>
-              setPodaciRezervacije({ ...podaciRezervacije, BrojTelefona: e.target.value })
-            }
-            style={{ marginBottom: '10px', width: '300px' }}
-          />
-          <TextField
-            id="email"
-            label="Email"
-            variant="outlined"
-            value={podaciRezervacije.Email}
-            onChange={(e) =>
-              setPodaciRezervacije({ ...podaciRezervacije, Email: e.target.value })
-            }
-            style={{ marginBottom: '10px', width: '300px' }}
-          />
-          <TextField
-            id="brojOsoba"
-            label="Broj osoba"
-            variant="outlined"
-            value={podaciRezervacije.BrojOsoba}
-            onChange={(e) =>
-              setPodaciRezervacije({ ...podaciRezervacije, BrojOsoba: e.target.value })
-            }
-            style={{ marginBottom: '10px', width: '300px' }}
-          />
-
-          <Button id="potvrdiRezervaciju" type="submit" variant="contained" sx={{ backgroundColor: '#900C3F'}}>
-            Potvrdi rezervaciju
-          </Button>
-        </form>
-      </div>
     )}
+
      {dodavanjeAktivno && (
       <div style={{ textAlign: 'center', marginTop: '20px' }}>
         <Typography variant="h6">Dodaj putovanje</Typography>
@@ -437,6 +315,7 @@ const handleSacuvajIzmene = async (e) => {
         </form>
       </div>
     )}
+
       <Typography variant="h6" gutterBottom style={{ fontFamily: 'sans-serif' }}>
         <Divider style={{ marginTop: '30px' }}>Lista putovanja</Divider>
       </Typography>
@@ -501,8 +380,7 @@ const handleSacuvajIzmene = async (e) => {
                                 </Button>
                                 </>
                             }
-                            
-                            
+
                             <NavLink to={`/Putovanje/${putovanje.id}/Smestaj`}>
                               <Button style={{ marginLeft: '10px' }} variant="outlined">
                               Smeštaj

@@ -15,8 +15,11 @@ const NavBar = () => {
   const handleLogout = async () => {
     try {
       const token = localStorage.getItem('token');
-      const response = await fetch(`http://localhost:5178/api/Auth/Logout?token=${token}`, {
-        method: 'DELETE'
+      const response = await fetch(`http://localhost:5178/api/Auth/Logout?token=${encodeURIComponent(token)}`, {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+        },
       });
       if (response.ok) {
         localStorage.removeItem('token');
@@ -29,6 +32,7 @@ const NavBar = () => {
       console.error('Greška pri odjavi:', error);
     }
   };
+  
 
   const handleMenuOpen = (event) => {
     setAnchorEl(event.currentTarget);
