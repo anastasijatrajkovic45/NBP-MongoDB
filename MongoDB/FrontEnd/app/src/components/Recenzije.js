@@ -15,6 +15,25 @@ const Recenzije = () => {
   const [novaRecenzija, setNovaRecenzija] = useState({ korisnik: '', komentar: '', ocena: 0 });
   const [izmenaRecenzije, setIzmenaRecenzije] = useState(false);
   const [izmenjeniPodaci, setIzmenjeniPodaci] = useState({ id: '', korisnik: '', komentar: '', ocena: 0 });
+  const [loggedIn, setLoggedIn] = useState(false);
+  const [isAdmin, setIsAdmin] = useState(true);
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    setLoggedIn(!!token);
+    if (token) {
+      fetchUserInfo(token);
+    }
+  }, []);
+
+  const fetchUserInfo = async (token) => {
+    try {
+      const response = await fetch(`http://localhost:5178/api/Auth/GetKorisnikByToken?token=${token}`);
+      const userInfo = await response.json();
+      setIsAdmin(userInfo.isAdmin);
+    } catch (error) {
+      console.error('Error fetching user info:', error);
+    }
+  };
 
   useEffect(() => {
     fetchData();
@@ -121,19 +140,22 @@ const Recenzije = () => {
     <div style={{ padding: '20px' }}>
       <Typography variant="h6" gutterBottom style={{ fontFamily: 'sans-serif' }}>
         <Divider variant="h4">Recenzije putovanja</Divider>
-        <Button
-        id="dodajRecenziju"
-        variant="contained"
-        sx={{backgroundColor: '#900C3F'}}
-        style={{
-          margin: '0 auto',
-          display: 'block',
-          marginTop: '20px',
-        }}
-        onClick={handleDodajRecenziju}
-      >
-        Dodaj
-      </Button>
+        {!loggedIn && (
+          <Button
+          id="dodajRecenziju"
+          variant="contained"
+          sx={{backgroundColor: '#900C3F'}}
+          style={{
+            margin: '0 auto',
+            display: 'block',
+            marginTop: '20px',
+          }}
+          onClick={handleDodajRecenziju}
+        >
+          Dodaj
+        </Button>
+        )}
+        
       </Typography>
 
       {loading ? (
@@ -154,22 +176,26 @@ const Recenzije = () => {
               <Typography variant="h6" gutterBottom>
                 {recenzija.korisnik}
                 <span style={{ marginLeft: '10px' }}>
-                      <EditIcon
-                        id="izmeniRecenziju"
-                        color="success"
-                        sx={{ cursor: 'pointer', marginRight: '10px' }}
-                        onClick={() => handleIzmeniRecenziju(recenzija.id)}
-                        onMouseOver={(e) => e.target.style.opacity = 0.7}
-                        onMouseOut={(e) => e.target.style.opacity = 1}
-                      />
-                      <DeleteIcon
-                        id="obrisiRecenziju"
-                        color="error"
-                        sx={{ cursor: 'pointer' }}
-                        onClick={() => handleObrisiRecenziju(recenzija.id)}
-                        onMouseOver={(e) => e.target.style.opacity = 0.7}
-                        onMouseOut={(e) => e.target.style.opacity = 1}
-                      />
+                  {!loggedIn && (
+                     <EditIcon
+                     id="izmeniRecenziju"
+                     color="success"
+                     sx={{ cursor: 'pointer', marginRight: '10px' }}
+                     onClick={() => handleIzmeniRecenziju(recenzija.id)}
+                     onMouseOver={(e) => e.target.style.opacity = 0.7}
+                     onMouseOut={(e) => e.target.style.opacity = 1}
+                   />
+                  )}
+                  {!loggedIn && (
+                     <DeleteIcon
+                     id="obrisiRecenziju"
+                     color="error"
+                     sx={{ cursor: 'pointer' }}
+                     onClick={() => handleObrisiRecenziju(recenzija.id)}
+                     onMouseOver={(e) => e.target.style.opacity = 0.7}
+                     onMouseOut={(e) => e.target.style.opacity = 1}
+                   />
+                  )}
                 </span>
               </Typography>
               <Typography variant="body1" color="textSecondary">

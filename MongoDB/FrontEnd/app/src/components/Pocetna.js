@@ -80,9 +80,12 @@ const Pocetna = () => {
                   Postanite deo naše zajednice i dodajte svoje putovanja i smeštajne opcije. Registracija je brza i
                   jednostavna.
                 </Typography>
-                <Button component={Link} to="/registracija" variant="outlined" size="large" sx={{ color:'#900C3F', borderColor:'#900C3F', mt: 2 }}>
+                <Button component={Link} to="/Registracija"  variant="outlined" size="large" sx={{ color:'#900C3F', borderColor:'#900C3F', mt: 2 }}>
                   Registrujte se
                 </Button>
+                {/* <Button component={Link} to="/Login" variant="outlined" size="large" sx={{ color:'#900C3F', borderColor:'#900C3F', mt: 2 }}>
+                  Uloguj se
+                </Button> */}
               </CardContent>
             </Card>
           </Zoom>

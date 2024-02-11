@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import {Card, CardContent, Typography, CircularProgress, Grid, Divider, Button, Dialog, DialogTitle, DialogContent, TextField} from '@mui/material';
+import Smestaj from './Smestaj';
 
 const PutovanjeProfil = () => {
   const { id } = useParams();
@@ -10,31 +11,26 @@ const PutovanjeProfil = () => {
   const [novaAktivnost, setNovaAktivnost] = useState({ naziv: '', cena: '' });
   const [izmenaAktivnosti, setIzmenaAktivnosti] = useState(false);
   const [izmenjeniPodaci, setIzmenjeniPodaci] = useState({ id: '', naziv: '', cena: '' });
-  const [reservations, setReservations] = useState([]);
-  const [loadingReservations, setLoadingReservations] = useState(true);
-  //rez
-  const [novaRezervacija, setNovaRezervacija] = useState({ ime: '', prezime: '', adresa: '', grad: '', brojTelefona: '', brojOsoba: '', email: '' });
-  const [izmenaRezervacije, setIzmenaRezervacije] = useState(false);
-  const [izmenjeniPodaciR, setIzmenjeniPodaciR] = useState({ id: '', ime: '', prezime: '', adresa: '', grad: '', brojTelefona: '', brojOsoba: '', email: '' });
+  const [loggedIn, setLoggedIn] = useState(false);
+  const [isAdmin, setIsAdmin] = useState(true);
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    setLoggedIn(!!token);
+    if (token) {
+      fetchUserInfo(token);
+    }
+  }, []);
 
-
-  const fetchReservations = () => {
-    setLoadingReservations(true);
-    fetch(`https://localhost:7193/Rezervacija/PreuzmiRezervacijePutovanja/${id}`)
-      .then((response) => response.json())
-      .then((data) => {
-        setReservations(data);
-        setLoadingReservations(false);
-      })
-      .catch((error) => {
-        console.error('Greška pri preuzimanju rezervacija:', error);
-        setLoadingReservations(false);
-      });
+  const fetchUserInfo = async (token) => {
+    try {
+      const response = await fetch(`http://localhost:5178/api/Auth/GetKorisnikByToken?token=${token}`);
+      const userInfo = await response.json();
+      setIsAdmin(userInfo.isAdmin);
+    } catch (error) {
+      console.error('Error fetching user info:', error);
+    }
   };
 
-  useEffect(() => {
-    fetchReservations();
-  }, []);
 
   useEffect(() => {
     fetchData();
@@ -50,20 +46,6 @@ const PutovanjeProfil = () => {
       })
       .catch((error) => {
         console.error('Greška pri preuzimanju aktivnosti:', error);
-        setLoading(false);
-      });
-  };
-
-  const fetchDataR = () => {
-    setLoading(true);
-    fetch(`https://localhost:7193/Rezervacija/PreuzmiRezervacijePutovanja/${id}`)
-      .then((response) => response.json())
-      .then((data) => {
-        setReservations(data);
-        setLoading(false);
-      })
-      .catch((error) => {
-        console.error('Greška pri preuzimanju rezervacije:', error);
         setLoading(false);
       });
   };
@@ -114,19 +96,7 @@ const PutovanjeProfil = () => {
       });
   };
 
-  //za brisanje rezervacije
 
-  const handleObrisiRezervaciju = (rezervacijaId) => {
-    fetch(`https://localhost:7193/Rezervacija/ObrisiRezervaicju/${rezervacijaId}`, {
-      method: 'DELETE',
-    })
-      .then(() => {
-        fetchDataR();
-      })
-      .catch((error) => {
-        console.error('Greška pri brisanju rezervacije:', error);
-      });
-  };
 
   const handleIzmeniAktivnost = (aktivnostId) => {
     const aktivnostZaIzmenu = aktivnosti.find((aktivnost) => aktivnost.id === aktivnostId);
@@ -164,65 +134,25 @@ const PutovanjeProfil = () => {
       });
   };
 
-  const handleIzmeniRezervaciju = (rezervacijaId) => {
-    const rezervacijaZaIzmenu = reservations.find((reservation) => reservation.id === rezervacijaId);
-    setIzmenjeniPodaciR({
-      id: rezervacijaZaIzmenu.id,
-      ime: rezervacijaZaIzmenu.ime,
-      prezime: rezervacijaZaIzmenu.prezime,
-      adresa: rezervacijaZaIzmenu.adresa,
-      grad: rezervacijaZaIzmenu.grad,
-      brojTelefona: rezervacijaZaIzmenu.brojTelefona,
-      brojOsoba: rezervacijaZaIzmenu.brojOsoba,
-      email: rezervacijaZaIzmenu.email
-    });
-    setIzmenaRezervacije(true);
-  };
-
-  const handleIzmenaChangeR = (event) => {
-    const { name, value } = event.target;
-    setIzmenjeniPodaciR((prevPodaci) => ({
-      ...prevPodaci,
-      [name]: value,
-    }));
-  };
-
-  const handleSacuvajIzmenuR = () => {
-    fetch(`https://localhost:7193/Rezervacija/AzurirajRezervaciju/${izmenjeniPodaciR.id}`, {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(izmenjeniPodaciR),
-    })
-      .then(() => {
-        setIzmenjeniPodaciR({ id: '', ime: '', prezime: '', adresa: '', grad: '', brojTelefona: '', brojOsoba: '', email: '' });
-        setIzmenaRezervacije(false);
-        fetchDataR();
-      })
-      .catch((error) => {
-        console.error('Greška pri ažuriranju rezervacije:', error);
-      });
-  };
-
   return (
     <div style={{ padding: '20px' }}>
       <Typography variant="h6" gutterBottom style={{ fontFamily: 'sans-serif' }}>
         <Divider variant='h4'>Aktivnosti na putovanju</Divider>
-        <Button
-        id="dodajAktivnost"
-        variant="contained"
-        sx={{backgroundColor: '#900C3F'}}
-        style={{
-          margin: '0 auto', 
-          display: 'block'
-        }}
-        onClick={handleDodajAktivnost}
-      >
-        Dodaj
-      </Button>
+        {loggedIn && !isAdmin && (
+           <Button
+           id="dodajAktivnost"
+           variant="contained"
+           sx={{backgroundColor: '#900C3F'}}
+           style={{
+             margin: '0 auto', 
+             display: 'block'
+           }}
+           onClick={handleDodajAktivnost}
+         >
+           Dodaj
+         </Button>
+        )}
       </Typography>
-      
       {loading ? (
         <CircularProgress style={{ marginTop: '20px' }} />
       ) : (
@@ -237,16 +167,20 @@ const PutovanjeProfil = () => {
                   <Typography variant="body1" color="textSecondary">
                     Cena: {aktivnost.cena}
                   </Typography>
-                  <Button
-                    id="obrisiAktivnost"
-                    variant="outlined"
-                    color="error"
-                    onClick={() => handleObrisiAktivnost(aktivnost.id)}
-                    style={{ marginTop: '10px' }}
-                  >
-                    Obriši
-                  </Button>
-                  <Button
+                  {loggedIn && !isAdmin && (
+                     <Button
+                     id="obrisiAktivnost"
+                     variant="outlined"
+                     color="error"
+                     onClick={() => handleObrisiAktivnost(aktivnost.id)}
+                     style={{ marginTop: '10px' }}
+                   >
+                     Obriši
+                   </Button>
+                  )}
+                 
+                 {loggedIn && !isAdmin &&(
+                    <Button
                     id="izmeniAktivnost"
                     variant="outlined"
                     color="success"
@@ -255,60 +189,14 @@ const PutovanjeProfil = () => {
                   >
                     Izmeni
                   </Button>
+                 )}
+                  
                 </CardContent>
               </Card>
             </Grid>
           ))}
         </Grid>
       )}
-
-      <Typography variant="h6" gutterBottom style={{ fontFamily: 'sans-serif', marginTop: '40px' }}>
-      <Divider variant='h4'>Rezervacije za putovanje</Divider>
-    </Typography>
-    {loadingReservations ? (
-      <CircularProgress style={{ marginTop: '20px' }} />
-    ) : (
-      <Grid container spacing={3} style={{ marginTop: '20px' }}>
-        {reservations.map((rezervacija) => (
-          <Grid item xs={12} sm={6} md={4} key={rezervacija.id}>
-            <Card id="rezervacije" variant="outlined">
-              <CardContent>
-                <Typography variant="body2" gutterBottom>
-                  Ime i prezime: {rezervacija.ime} {rezervacija.prezime} 
-                </Typography>
-                <Typography variant="body2" gutterBottom>
-                  Adresa: {rezervacija.adresa}, {rezervacija.grad} 
-                </Typography>
-                <Typography variant="body2" gutterBottom>
-                  Kontakt: {rezervacija.brojTelefona}, {rezervacija.email} 
-                </Typography>
-                <Typography variant="body2" gutterBottom>
-                  Broj Osoba: {rezervacija.brojOsoba}
-                </Typography>
-                <Button
-                    id="obrisiRezervaciju"
-                    variant="outlined"
-                    color="error"
-                    onClick={() => handleObrisiRezervaciju(rezervacija.id)}
-                    style={{ marginTop: '10px' }}
-                  >
-                    Obriši
-                  </Button>
-                <Button
-                    id="izmeniRezervaciju"
-                    variant="outlined"
-                    color="success"
-                    onClick={() => handleIzmeniRezervaciju(rezervacija.id)}
-                    style={{ marginLeft: '10px', marginTop: '10px' }}
-                  >
-                    Izmeni
-                  </Button>
-              </CardContent>
-            </Card>
-          </Grid>
-        ))}
-      </Grid>
-    )}
 
       <Dialog open={openForm} onClose={handleCloseForm}>
         <DialogTitle>Dodaj novu aktivnost</DialogTitle>
@@ -369,86 +257,7 @@ const PutovanjeProfil = () => {
         </DialogContent>
       </Dialog>
 
-      <Dialog open={izmenaRezervacije} onClose={() => setIzmenaRezervacije(false)}>
-        <DialogTitle>Izmeni rezervacije</DialogTitle>
-        <DialogContent>
-          <TextField
-            autoFocus
-            margin="dense"
-            id="ime"
-            name="ime"
-            label="Ime"
-            type="text"
-            fullWidth
-            value={izmenjeniPodaciR.ime}
-            onChange={handleIzmenaChangeR}
-          />
-          <TextField
-            margin="dense"
-            id="prezime"
-            name="prezime"
-            label="Prezime"
-            type="text"
-            fullWidth
-            value={izmenjeniPodaciR.prezime}
-            onChange={handleIzmenaChangeR}
-          />
-          <TextField
-            margin="dense"
-            id="adresa"
-            name="adresa"
-            label="Adresa"
-            type="text"
-            fullWidth
-            value={izmenjeniPodaciR.adresa}
-            onChange={handleIzmenaChangeR}
-          />
-          <TextField
-            margin="dense"
-            id="grad"
-            name="grad"
-            label="Grad"
-            type="text"
-            fullWidth
-            value={izmenjeniPodaciR.grad}
-            onChange={handleIzmenaChangeR}
-          />
-          <TextField
-            margin="dense"
-            id="brojTelefona"
-            name="brojTelefona"
-            label="Broj telefona"
-            type="text"
-            fullWidth
-            value={izmenjeniPodaciR.brojTelefona}
-            onChange={handleIzmenaChangeR}
-          />
-          <TextField
-            margin="dense"
-            id="email"
-            name="email"
-            label="Email"
-            type="text"
-            fullWidth
-            value={izmenjeniPodaciR.email}
-            onChange={handleIzmenaChangeR}
-          />
-          <TextField
-            margin="dense"
-            id="brojOsoba"
-            name="brojOsoba"
-            label="Broj osoba"
-            type="number"
-            fullWidth
-            value={izmenjeniPodaciR.brojOsoba}
-            onChange={handleIzmenaChangeR}
-          />
-
-          <Button id="sacuvajIzmeneRezervacije" variant="contained" sx={{backgroundColor: '#900C3F'}} onClick={handleSacuvajIzmenuR}>
-            Sačuvaj izmene
-          </Button>
-        </DialogContent>
-      </Dialog>
+      {/* <Smestaj/> */}
     </div>
   );
 };

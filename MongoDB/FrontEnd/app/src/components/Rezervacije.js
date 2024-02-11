@@ -23,6 +23,25 @@ const Rezervacije = () => {
   const [brojOsoba, setBrojOsoba] = useState(1);
   const [email, setEmail] = useState('');
   const [selectedReservationId, setSelectedReservationId] = useState(null);
+  const [loggedIn, setLoggedIn] = useState(false);
+  const [isAdmin, setIsAdmin] = useState(true);
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    setLoggedIn(!!token);
+    if (token) {
+      fetchUserInfo(token);
+    }
+  }, []);
+
+  const fetchUserInfo = async (token) => {
+    try {
+      const response = await fetch(`http://localhost:5178/api/Auth/GetKorisnikByToken?token=${token}`);
+      const userInfo = await response.json();
+      setIsAdmin(userInfo.isAdmin);
+    } catch (error) {
+      console.error('Error fetching user info:', error);
+    }
+  };
 
   useEffect(() => {
     const fetchRezervacije = async () => {
@@ -204,19 +223,23 @@ const Rezervacije = () => {
               <Typography variant="body2" color="text.secondary">
                 Email: {rezervacija.email}
               </Typography>
-              <Button 
-                variant="outlined" 
-                color="secondary" 
-                onClick={() => handleOtkaziRezervaciju(rezervacija.id)}
-                style={{ marginTop: '10px' }}
-              >
-                OTKAŽI REZERVACIJU
-              </Button>
+              {!loggedIn && (
+                 <Button 
+                 variant="outlined" 
+                 color="secondary" 
+                 onClick={() => handleOtkaziRezervaciju(rezervacija.id)}
+                 style={{ marginTop: '10px' }}
+               >
+                 OTKAŽI REZERVACIJU
+               </Button>
+              )}
+             
             </CardContent>
           </Card>
         ))}
         <Divider>
-        <Button
+          {!loggedIn && (
+            <Button
             variant="outlined"
             color="primary"
             onClick={handleOpenForm}
@@ -229,6 +252,8 @@ const Rezervacije = () => {
         >
             Rezerviši smestaj
         </Button>
+          )}
+        
         </Divider>
        
       </div>

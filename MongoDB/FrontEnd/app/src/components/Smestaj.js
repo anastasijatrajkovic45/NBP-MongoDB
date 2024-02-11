@@ -43,6 +43,26 @@ const Smestaj = () => {
     slike: [],
   });
 
+  const [loggedIn, setLoggedIn] = useState(false);
+  const [isAdmin, setIsAdmin] = useState(true);
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    setLoggedIn(!!token);
+    if (token) {
+      fetchUserInfo(token);
+    }
+  }, []);
+
+  const fetchUserInfo = async (token) => {
+    try {
+      const response = await fetch(`http://localhost:5178/api/Auth/GetKorisnikByToken?token=${token}`);
+      const userInfo = await response.json();
+      setIsAdmin(userInfo.isAdmin);
+    } catch (error) {
+      console.error('Error fetching user info:', error);
+    }
+  };
+
   useEffect(() => {
     const fetchSmestaji = async () => {
       try {
@@ -198,7 +218,8 @@ const Smestaj = () => {
       <Typography variant="h6" gutterBottom style={{ fontFamily: 'sans-serif' }}>
         <Divider style={{ marginTop: '30px' }}>Lista smestaja</Divider>
       </Typography>
-      <Button
+      {loggedIn && !isAdmin && (
+        <Button
         variant="outlined"
         color="primary"
         onClick={() => setShowForm(true)}
@@ -211,6 +232,8 @@ const Smestaj = () => {
       >
         Dodaj
       </Button>
+      )}
+      
 
       {showForm && (
         <Modal
@@ -270,6 +293,7 @@ const Smestaj = () => {
                 fullWidth
                 margin="normal"
               />
+
               <Button variant="outlined" color="primary" onClick={handleDodajSmestaj}>
                 Dodaj smeštaj
               </Button>
@@ -362,20 +386,25 @@ const Smestaj = () => {
                 <Typography variant="body2" color="text.secondary">
                   Udaljenost od centra: {smestaj.udaljenostCentra} m
                 </Typography>
-                <IconButton
+                {loggedIn && !isAdmin && (
+                  <IconButton
                   color="error"
                   onClick={() => handleObrisiSmestaj(smestaj.id)}
                   style={{ marginTop: '10px' }}
                 >
                   <DeleteIcon />
                 </IconButton>
-                <IconButton
+                )}
+                {loggedIn && !isAdmin && (
+                  <IconButton
                   color="primary"
                   onClick={() => openEditModal(smestaj)}
                   style={{ marginTop: '10px' }}
                 >
                   <EditIcon />
                 </IconButton>
+                )}
+                
                 <IconButton
                   color="primary"
                   onClick={() => handleRezervacija(id, smestaj.id)}

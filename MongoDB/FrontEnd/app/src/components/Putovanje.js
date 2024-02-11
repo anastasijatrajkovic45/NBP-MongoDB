@@ -42,6 +42,27 @@ const Putovanje = () => {
     Email: '',
     BrojOsoba: 0
   });
+  const [loggedIn, setLoggedIn] = useState(false);
+  const [isAdmin, setIsAdmin] = useState(true);
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    setLoggedIn(!!token);
+    if (token) {
+      fetchUserInfo(token);
+    }
+  }, []);
+
+  const fetchUserInfo = async (token) => {
+    try {
+      const response = await fetch(`http://localhost:5178/api/Auth/GetKorisnikByToken?token=${token}`);
+      const userInfo = await response.json();
+      setIsAdmin(userInfo.isAdmin);
+    } catch (error) {
+      console.error('Error fetching user info:', error);
+    }
+  };
+
+
 
   useEffect(() => {
     async function fetchPutovanja() {
@@ -86,11 +107,6 @@ const [noviPodaci, setNoviPodaci] = useState({
   prevoz: ''
 });
 
-const handleRezervacijaPutovanja = async (putovanjeId) => {
-  setRezervacijaAktivna(true);
-  const izabranoPutovanje = putovanja.find((putovanje) => putovanje.id === putovanjeId);
-  setPutovanjeZaIzmenu(izabranoPutovanje);
-};
 
 const handleRezervacija = async () => {
   try {
@@ -433,9 +449,12 @@ const handleSacuvajIzmene = async (e) => {
                         <Typography variant="h6" component="div" sx={{ display: 'flex', justifyContent: 'space-between', paddingRight: '16px' }}>
                             {putovanje.mesto}
                             <NavLink to={`/Putovanje/${putovanje.id}/Recenzije`}>
+                        
                               <Button variant="outlined" color="secondary">
-                                Recenzije
-                              </Button>
+                              Recenzije
+                            </Button> 
+                              
+                              
                             </NavLink>
                             </Typography>
                             <Typography variant="body2" color="textSecondary" component="p">
@@ -454,32 +473,35 @@ const handleSacuvajIzmene = async (e) => {
                               </Button>
                             </NavLink>
                             <Divider style={{ margin: '10px 0' }} />
-                            <Button
-                              id="obrisi"
-                              variant="outlined"
-                              color="error"
-                              onClick={() => handleObrisiPutovanje(putovanje.id)}
-                            >
-                              Obriši
-                            </Button>
-                            <Button
-                              id="izmeni"
-                              variant="outlined"
-                              color="success"
-                              onClick={() => handleIzmeniPutovanje(putovanje.id)}
-                              style={{ marginLeft: '10px' }}
-                            >
-                              Izmeni
-                            </Button>
-                            {/* <Button
-                              id="rezervisi"
-                              variant="outlined"
-                              color="primary"
-                              onClick={() => handleRezervacijaPutovanja(putovanje.id)}
-                              style={{ marginLeft: '10px' }}
-                            >
-                              Rezerviši
-                            </Button> */}
+                            {loggedIn && !isAdmin &&
+                               (
+                                <>
+                                <Button
+                                id="obrisi"
+                                variant="outlined"
+                                color="error"
+                                onClick={() => handleObrisiPutovanje(putovanje.id)}
+                              >
+                                Obriši
+                              </Button>
+                              </>
+                              )
+                            }
+                            
+                            {loggedIn && !isAdmin &&
+                                <>
+                                  <Button
+                                  id="izmeni"
+                                  variant="outlined"
+                                  color="success"
+                                  onClick={() => handleIzmeniPutovanje(putovanje.id)}
+                                  style={{ marginLeft: '10px' }}
+                                >
+                                  Izmeni
+                                </Button>
+                                </>
+                            }
+                            
                             
                             <NavLink to={`/Putovanje/${putovanje.id}/Smestaj`}>
                               <Button style={{ marginLeft: '10px' }} variant="outlined">

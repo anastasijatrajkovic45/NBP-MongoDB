@@ -10,6 +10,8 @@ import PutovanjePrikaz from './components/PutovanjePrikaz';
 import Recenzije from './components/Recenzije';
 import Smestaj from './components/Smestaj';
 import Rezervacije from './components/Rezervacije';
+import Registracija from './components/Registracija';
+import Login from './components/Login';
 
 const App = () => {
   return (
@@ -19,6 +21,8 @@ const App = () => {
       <Routes>
         <Route path="/" element={<Pocetna />} />
         <Route path="/Agencije" element={<Agencije />} />
+        <Route path="/Registracija" element={<Registracija onSuccess={() => window.location.href = '/Login'} />} />
+        <Route path="/login" element={<Login onSuccess={() => window.location.href = '/'} />} />
         <Route path="/Agencije/:id" element={<Putovanje />} />
         <Route path="/Putovanje/:id/Recenzije" element={<Recenzije />} />
         <Route path="/Putovanje/:id/Smestaj" element={<Smestaj />} />

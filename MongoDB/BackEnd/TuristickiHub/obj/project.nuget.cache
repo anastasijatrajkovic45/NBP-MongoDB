@@ -1,12 +1,15 @@
 {
   "version": 2,
-  "dgSpecHash": "2Lr2RqtZ4Hq+rLN6Temm0YOiXVWnIlFh4KtsIRPHvFu2qHyyOMWn62B9ZSdksq2M3k3VuphWRAMBrCFBXM0k/w==",
+  "dgSpecHash": "qeS1EAZg6o4gapeydYvACtCVO2aH331dv234LWOebOKYMueLXXL4nqtt0+y54BAHYPPKkOYDLEjLb5kf9/FwNQ==",
   "success": true,
-  "projectFilePath": "C:\\Users\\ANASTASIJA\\Desktop\\Fakultet\\VII semestar\\Napredne baze podataka\\NBP-MongoDB\\MongoDB\\BackEnd\\TuristickiHub\\TuristickiHub.csproj",
+  "projectFilePath": "C:\\Users\\ANASTASIJA\\Desktop\\Fakultet\\VII semestar\\Napredne baze podataka\\MongoDB\\BackEnd\\TuristickiHub\\TuristickiHub.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\ANASTASIJA\\.nuget\\packages\\awssdk.core\\3.7.100.14\\awssdk.core.3.7.100.14.nupkg.sha512",
     "C:\\Users\\ANASTASIJA\\.nuget\\packages\\awssdk.securitytoken\\3.7.100.14\\awssdk.securitytoken.3.7.100.14.nupkg.sha512",
     "C:\\Users\\ANASTASIJA\\.nuget\\packages\\dnsclient\\1.6.1\\dnsclient.1.6.1.nupkg.sha512",
+    "C:\\Users\\ANASTASIJA\\.nuget\\packages\\isopoh.cryptography.argon2\\2.0.0\\isopoh.cryptography.argon2.2.0.0.nupkg.sha512",
+    "C:\\Users\\ANASTASIJA\\.nuget\\packages\\isopoh.cryptography.blake2b\\2.0.0\\isopoh.cryptography.blake2b.2.0.0.nupkg.sha512",
+    "C:\\Users\\ANASTASIJA\\.nuget\\packages\\isopoh.cryptography.securearray\\2.0.0\\isopoh.cryptography.securearray.2.0.0.nupkg.sha512",
     "C:\\Users\\ANASTASIJA\\.nuget\\packages\\microsoft.aspnetcore.openapi\\8.0.1\\microsoft.aspnetcore.openapi.8.0.1.nupkg.sha512",
     "C:\\Users\\ANASTASIJA\\.nuget\\packages\\microsoft.extensions.apidescription.server\\6.0.5\\microsoft.extensions.apidescription.server.6.0.5.nupkg.sha512",
     "C:\\Users\\ANASTASIJA\\.nuget\\packages\\microsoft.extensions.logging.abstractions\\2.0.0\\microsoft.extensions.logging.abstractions.2.0.0.nupkg.sha512",

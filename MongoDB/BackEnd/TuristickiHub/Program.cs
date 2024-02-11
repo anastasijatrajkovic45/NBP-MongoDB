@@ -3,7 +3,6 @@ using TuristickiHub.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
 builder.Services.Configure<TuristickiHubDatabaseSettings>(
     builder.Configuration.GetSection("TuristickiHubDatabase"));
 
@@ -13,9 +12,9 @@ builder.Services.AddSingleton<AktivnostService>();
 builder.Services.AddSingleton<RecenzijaService>();
 builder.Services.AddSingleton<RezervacijaService>();
 builder.Services.AddSingleton<SmestajService>();
+builder.Services.AddSingleton<AuthService>();
 
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
@@ -31,7 +30,6 @@ builder.Services.AddCors(options =>
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
